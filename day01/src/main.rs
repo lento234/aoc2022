@@ -1,7 +1,7 @@
 use std::fs;
 
 fn part_1(path: &str) -> i64 {
-    let contents = fs::read_to_string(path).expect("Cannot find file");
+    let contents = fs::read_to_string(path).expect("Cannot find file!");
 
     let mut sum: i64 = 0;
     let mut largest_sum: i64 = 0;
