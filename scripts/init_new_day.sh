@@ -18,10 +18,9 @@ then
     exit 1
 fi
 
+# Initializing new directory using cargo
 echo "Initializing new day: day $DAYXX"
-
-# Make new directory for new day
-mkdir -v $NEWDAY
+cargo new $NEWDAY --vcs=none
 
 # Generate README for new day
 echo -e "# Day $DAYXX\n" > $NEWDAY/README.md
