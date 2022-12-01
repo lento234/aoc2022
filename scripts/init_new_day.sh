@@ -27,7 +27,9 @@ mkdir -v $NEWDAY
 echo -e "# Day $DAYXX\n" > $NEWDAY/README.md
 
 # Fetch the challenge of new day
-./scripts/fetch_challenge.sh $DAY
+echo "Downloading the puzzle description for day $DAYXX"
+./scripts/fetch_description.sh $DAY > $NEWDAY/README.md
 
 # Fetch the input
-./scripts/fetch_input.sh $DAY
+echo "Downloading the puzzle input for day $DAYXX"
+./scripts/fetch_input.sh $DAY > $NEWDAY/input.txt
