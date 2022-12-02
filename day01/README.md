@@ -67,8 +67,6 @@ that Elf carrying?*
 
 Your puzzle answer was `72240`.
 
-The first half of this puzzle is complete! It provides one gold star: \*
-
 ## \-\-- Part Two \-\--
 
 By the time you calculate the answer to the Elves\' question, they\'ve
@@ -88,13 +86,4 @@ these three elves is *`45000`*.
 Find the top three Elves carrying the most Calories. *How many Calories
 are those Elves carrying in total?*
 
-Answer:
-
-Although it hasn\'t changed, you can still [get your puzzle
-input](1/input).
-
-You can also [\[Share[on
-[Twitter](https://twitter.com/intent/tweet?text=I%27ve+completed+Part+One+of+%22Calorie+Counting%22+%2D+Day+1+%2D+Advent+of+Code+2022&url=https%3A%2F%2Fadventofcode%2Ecom%2F2022%2Fday%2F1&related=ericwastl&hashtags=AdventOfCode)
-[Mastodon](javascript:void(0);){onclick="var mastodon_instance=prompt('Mastodon Instance / Server Name?'); if(typeof mastodon_instance==='string' && mastodon_instance.length)else"
-target="_blank"}]\]] this puzzle.
-:::
+Your puzzle answer was `210957`.
