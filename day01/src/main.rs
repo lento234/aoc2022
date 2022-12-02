@@ -25,11 +25,13 @@ fn part_2(path: &str) -> i64 {
     // Read the file
     let contents: String = fs::read_to_string(path).expect("Cannot find file!");
 
+    let input: Vec<&str> = contents.split('\n').collect(); // Assume space on last line
+
     // Initialize sum
     let mut sums: Vec<i64> = Vec::new();
     let mut sum: i64 = 0;
 
-    for line in contents.lines() {
+    for line in input {
         if line == "" {
             sums.push(sum);
             sum = 0;
@@ -37,9 +39,10 @@ fn part_2(path: &str) -> i64 {
             sum += line.parse::<i64>().unwrap();
         }
     }
-    sums.push(sum);
+    // Store sum
     sums.sort();
 
+    // Return the sum of the biggest 3
     sums.iter().rev().take(3).sum::<i64>()
 }
 
