@@ -44,19 +44,18 @@ fn part_2(path: &str) -> i64 {
 }
 
 fn main() {
-    // Tests
-
-    // Part 1
+    // Test: Part 1
     let answer: i64 = part_1("test_input.txt");
     println!("[Test]: Part 1: {}", answer);
     assert!(answer == 24_000);
 
-    // Part 1
+    // Test: Part 2
     let answer: i64 = part_2("test_input.txt");
     println!("[Test]: Part 2: {:?}", answer);
     assert!(answer == 45_000);
 
-    // Input
+    // Challenge 1
     println!("[Solution]: Part 1: {}", part_1("input.txt"));
+    // Challenge 2
     println!("[Solution]: Part 2: {}", part_2("input.txt"));
 }
