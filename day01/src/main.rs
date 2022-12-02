@@ -2,7 +2,7 @@ use std::fs;
 // use std::collections;
 
 fn part_1(path: &str) -> i64 {
-    let contents = fs::read_to_string(path).expect("Cannot find file!");
+    let contents: String = fs::read_to_string(path).expect("Cannot find file!");
 
     let mut sum: i64 = 0;
     let mut largest_sum: i64 = 0;
@@ -23,28 +23,24 @@ fn part_1(path: &str) -> i64 {
 
 fn part_2(path: &str) -> i64 {
     // Read the file
-    let contents = fs::read_to_string(path).expect("Cannot find file!");
+    let contents: String = fs::read_to_string(path).expect("Cannot find file!");
 
     // Initialize sum
     let mut sums: Vec<i64> = Vec::new();
     let mut sum: i64 = 0;
-    let mut largest_sum: i64 = 0;
 
     for line in contents.lines() {
         if line == "" {
-            if sum > largest_sum || sums.len() <= 3 {
-                sums.push(sum.clone());
-                largest_sum = sum.clone();
-            }
+            sums.push(sum);
             sum = 0;
         } else {
             sum += line.parse::<i64>().unwrap();
         }
     }
+    sums.push(sum);
     sums.sort();
 
-    sums.iter().rev().enumerate().filter(|x| x.0 <= 3 ).map(|x| x.1).sum::<i64>()
-
+    sums.iter().rev().take(3).sum::<i64>()
 }
 
 fn main() {
@@ -60,8 +56,7 @@ fn main() {
     println!("[Test]: Part 2: {:?}", answer);
     assert!(answer == 45_000);
 
-
-    // // Input
-    // let largest_sum: i64 = part_1("input.txt");
-    // println!("[Solution]: Part 1: {}", largest_sum);
+    // Input
+    println!("[Solution]: Part 1: {}", part_1("input.txt"));
+    println!("[Solution]: Part 2: {}", part_2("input.txt"));
 }
