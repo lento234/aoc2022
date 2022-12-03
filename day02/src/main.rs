@@ -8,7 +8,15 @@ enum RPS {
     Unknown = 0,
 }
 
-fn parse_line(line: &str) -> (RPS, RPS) {
+#[derive(Debug, PartialEq)]
+enum Ins {
+    Lose = 0,
+    Draw = 3,
+    Win = 6,
+    Unknown = -1,
+}
+
+fn parse_line_part1(line: &str) -> (RPS, RPS) {
     let left = match line.get(0..1).unwrap() {
         "A" => RPS::Rock,
         "B" => RPS::Paper,
@@ -25,6 +33,24 @@ fn parse_line(line: &str) -> (RPS, RPS) {
     (left, right)
 }
 
+fn parse_line_part2(line: &str) -> (RPS, Ins) {
+    let left = match line.get(0..1).unwrap() {
+        "A" => RPS::Rock,
+        "B" => RPS::Paper,
+        "C" => RPS::Scissor,
+        _ => RPS::Unknown,
+    };
+
+    let right = match line.get(2..).unwrap() {
+        "X" => Ins::Lose,
+        "Y" => Ins::Draw,
+        "Z" => Ins::Win,
+        _ => Ins::Unknown,
+    };
+    (left, right)
+}
+
+
 fn part_1(path: &str) -> i64 {
     let contents = fs::read_to_string(path).expect("Cannot find file!");
 
@@ -32,7 +58,7 @@ fn part_1(path: &str) -> i64 {
     let mut total_right_score: i64 = 0;
 
     for line in contents.lines() {
-        let (left_score, right_score) = match parse_line(line) {
+        let (left_score, right_score) = match parse_line_part1(line) {
             (RPS::Rock, RPS::Paper) => (RPS::Rock as i64, (RPS::Paper as i64) + 6),
             (RPS::Paper, RPS::Scissor) => (RPS::Paper as i64, (RPS::Scissor as i64) + 6),
             (RPS::Scissor, RPS::Rock) => (RPS::Scissor as i64, (RPS::Rock as i64) + 6),
@@ -55,23 +81,54 @@ fn part_1(path: &str) -> i64 {
     }
 }
 
+
+fn part_2(path: &str) -> i64 {
+    let contents = fs::read_to_string(path).expect("Cannot find file!");
+
+    for line in contents.lines() {
+        match parse_line_part2(line) {
+            (rps, Ins::Draw) => {
+                println!("{:?} -> draw -> {:?} + {:?}", rps, rps as i64, 3)
+            },
+            (rps, Ins::Win) => {
+                match rps {
+                    RPS::Rock => println!("{:?} -> Win -> {:?} + {:?}", rps, RPS::Paper, 6),
+                    RPS::Paper => println!("{:?} -> Win -> {:?} + {:?}", rps, RPS::Scissor, 6),
+                    RPS::Scissor => println!("{:?} -> Win -> {:?} + {:?}", rps, RPS::Rock as i64, 6),
+                    _ => println!("Unknown win!")
+                }
+            }
+            (rps, Ins::Lose) => {
+                match rps {
+                    RPS::Rock => println!("{:?} -> Lose -> {:?} + {:?}", rps, RPS::Scissor as i64, 0),
+                    RPS::Paper => println!("{:?} -> Lose -> {:?} + {:?}", rps, RPS::Rock as i64, 0),
+                    RPS::Scissor => println!("{:?} -> Lose -> {:?} + {:?}", rps, RPS::Paper as i64, 0),
+                    _ => println!("Unknown Lose!")
+                }
+            }
+            (_, _) => println!("Unknown")
+        };
+    }
+    1
+}
+
 #[test]
 fn test_part1() {
     assert!(part_1("test_input.txt") == 15);
 }
 
-// #[test]
-// fn test_part2() {
-//     assert!(part_1("test_input.txt") == 15);
-// }
+#[test]
+fn test_part2() {
+    assert!(part_2("test_input.txt") == 12);
+}
 
 fn main() {
     println!("Advent of Code: Day 2");
     println!("---------------------");
 
-    // Challenge 1
-    println!(
-        "\u{1b}[32m[Solution]\u{1b}[39m: Part 1: {}",
-        part_1("input.txt")
-    );
+    // // Challenge 1
+    // println!(
+    //     "\u{1b}[32m[Solution]\u{1b}[39m: Part 1: {}",
+    //     part_1("input.txt")
+    // );
 }
