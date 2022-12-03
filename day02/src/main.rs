@@ -1,26 +1,26 @@
 use std::fs;
 
-#[derive(Debug,PartialEq)]
+#[derive(Debug, PartialEq)]
 enum RPS {
-    rock = 1,
-    paper,
-    scissor,
-    err
+    Rock = 1,
+    Paper,
+    Scissor,
+    Unknown = -1,
 }
 
 fn parse_line(line: &str) -> (RPS, RPS) {
     let left = match line.get(0..1).unwrap() {
-        "A" => RPS::rock,
-        "B" => RPS::paper,
-        "C" => RPS::scissor,
-        _ => RPS::err
+        "A" => RPS::Rock,
+        "B" => RPS::Paper,
+        "C" => RPS::Scissor,
+        _ => RPS::Unknown,
     };
 
     let right = match line.get(2..).unwrap() {
-        "X" => RPS::rock,
-        "Y" => RPS::paper,
-        "Z" => RPS::scissor,
-        _ => RPS::err
+        "X" => RPS::Rock,
+        "Y" => RPS::Paper,
+        "Z" => RPS::Scissor,
+        _ => RPS::Unknown,
     };
     (left, right)
 }
@@ -32,9 +32,9 @@ fn part_1(path: &str) -> i64 {
 
     for line in contents.lines() {
         let score = match parse_line(line) {
-            (RPS::rock, RPS::paper) => (RPS::paper as u8) + 6,
-            (RPS::paper, RPS::scissor) => (RPS::scissor as u8) + 6,
-            (RPS::scissor, RPS::rock) => (RPS::rock as u8) + 6,
+            (RPS::Rock, RPS::Paper) => (RPS::Paper as u8) + 6,
+            (RPS::Paper, RPS::Scissor) => (RPS::Scissor as u8) + 6,
+            (RPS::Scissor, RPS::Rock) => (RPS::Rock as u8) + 6,
             (left, right) => {
                 if left == right {
                     (left as u8) + (right as u8)
@@ -45,14 +45,13 @@ fn part_1(path: &str) -> i64 {
         };
 
         total_score += score as i64;
-
     }
     total_score
 }
 
 fn main() {
-        // Test: Part 1
-        let answer: i64 = part_1("test_input.txt");
-        println!("\u{1b}[31m[Test]\u{1b}[39m: Part 1: {}", answer);
-        assert!(answer == 15);
+    // Test: Part 1
+    let answer: i64 = part_1("test_input.txt");
+    println!("\u{1b}[31m[Test]\u{1b}[39m: Part 1: {}", answer);
+    assert!(answer == 15);
 }
