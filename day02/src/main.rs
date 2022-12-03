@@ -50,7 +50,6 @@ fn parse_line_part2(line: &str) -> (RPS, Ins) {
     (left, right)
 }
 
-
 fn part_1(path: &str) -> i64 {
     let contents = fs::read_to_string(path).expect("Cannot find file!");
 
@@ -81,30 +80,26 @@ fn part_1(path: &str) -> i64 {
     }
 }
 
-
 fn part_2(path: &str) -> i64 {
     let contents = fs::read_to_string(path).expect("Cannot find file!");
 
     let mut total_score: i64 = 0;
     for line in contents.lines() {
         let score = match parse_line_part2(line) {
-            (rps, Ins::Draw) => (rps as i64) +  3,
-            (rps, Ins::Win) =>
-                match rps {
-                    RPS::Rock => (RPS::Paper as i64) +  6,
-                    RPS::Paper => (RPS::Scissor as i64) +  6,
-                    RPS::Scissor =>(RPS::Rock as i64) +  6,
-                    _ => 0
-                }
-            (rps, Ins::Lose) => {
-                match rps {
-                    RPS::Rock => RPS::Scissor as i64,
-                    RPS::Paper => RPS::Rock as i64,
-                    RPS::Scissor => RPS::Paper as i64,
-                    _ => 0_i64
-                }
-            }
-            (_, _) => 0_i64
+            (rps, Ins::Draw) => (rps as i64) + 3,
+            (rps, Ins::Win) => match rps {
+                RPS::Rock => (RPS::Paper as i64) + 6,
+                RPS::Paper => (RPS::Scissor as i64) + 6,
+                RPS::Scissor => (RPS::Rock as i64) + 6,
+                _ => 0,
+            },
+            (rps, Ins::Lose) => match rps {
+                RPS::Rock => RPS::Scissor as i64,
+                RPS::Paper => RPS::Rock as i64,
+                RPS::Scissor => RPS::Paper as i64,
+                _ => 0_i64,
+            },
+            (_, _) => 0_i64,
         };
         total_score += score;
     }
