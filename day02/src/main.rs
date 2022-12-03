@@ -85,31 +85,30 @@ fn part_1(path: &str) -> i64 {
 fn part_2(path: &str) -> i64 {
     let contents = fs::read_to_string(path).expect("Cannot find file!");
 
+    let mut total_score: i64 = 0;
     for line in contents.lines() {
-        match parse_line_part2(line) {
-            (rps, Ins::Draw) => {
-                println!("{:?} -> draw -> {:?} + {:?}", rps, rps as i64, 3)
-            },
-            (rps, Ins::Win) => {
+        let score = match parse_line_part2(line) {
+            (rps, Ins::Draw) => (rps as i64) +  3,
+            (rps, Ins::Win) =>
                 match rps {
-                    RPS::Rock => println!("{:?} -> Win -> {:?} + {:?}", rps, RPS::Paper, 6),
-                    RPS::Paper => println!("{:?} -> Win -> {:?} + {:?}", rps, RPS::Scissor, 6),
-                    RPS::Scissor => println!("{:?} -> Win -> {:?} + {:?}", rps, RPS::Rock as i64, 6),
-                    _ => println!("Unknown win!")
+                    RPS::Rock => (RPS::Paper as i64) +  6,
+                    RPS::Paper => (RPS::Scissor as i64) +  6,
+                    RPS::Scissor =>(RPS::Rock as i64) +  6,
+                    _ => 0
                 }
-            }
             (rps, Ins::Lose) => {
                 match rps {
-                    RPS::Rock => println!("{:?} -> Lose -> {:?} + {:?}", rps, RPS::Scissor as i64, 0),
-                    RPS::Paper => println!("{:?} -> Lose -> {:?} + {:?}", rps, RPS::Rock as i64, 0),
-                    RPS::Scissor => println!("{:?} -> Lose -> {:?} + {:?}", rps, RPS::Paper as i64, 0),
-                    _ => println!("Unknown Lose!")
+                    RPS::Rock => RPS::Scissor as i64,
+                    RPS::Paper => RPS::Rock as i64,
+                    RPS::Scissor => RPS::Paper as i64,
+                    _ => 0_i64
                 }
             }
-            (_, _) => println!("Unknown")
+            (_, _) => 0_i64
         };
+        total_score += score;
     }
-    1
+    total_score
 }
 
 #[test]
@@ -126,9 +125,14 @@ fn main() {
     println!("Advent of Code: Day 2");
     println!("---------------------");
 
-    // // Challenge 1
-    // println!(
-    //     "\u{1b}[32m[Solution]\u{1b}[39m: Part 1: {}",
-    //     part_1("input.txt")
-    // );
+    // Challenge 1
+    println!(
+        "\u{1b}[32m[Solution]\u{1b}[39m: Part 1: {}",
+        part_1("input.txt")
+    );
+
+    println!(
+        "\u{1b}[32m[Solution]\u{1b}[39m: Part 2: {}",
+        part_2("input.txt")
+    );
 }
