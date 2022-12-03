@@ -18,12 +18,12 @@ Advent of Code is an Advent calendar of small programming puzzles for a variety 
 
 ## Calendar
 
-|   M   |   T   |   W   |   T   |   F   |   S   |                 S                 |
-| :---: | :---: | :---: | :---: | :---: | :---: | :-------------------------------: |
-|       |       |       |   1   |   2   |   3   |                 4                 |
-|   5   |   6   |   7   |   8   |   9   |  10   |                11                 |
-|  12   |  13   |  14   |  15   |  16   |  17   |                18                 |
-|  19   |  20   |  21   |  22   |  23   |  24   | [🎁](https://youtu.be/bpQ3UfPYQn8) |
+|   M   |   T   |   W   |          T           |   F   |   S   |                 S                 |
+| :---: | :---: | :---: | :------------------: | :---: | :---: | :-------------------------------: |
+|       |       |       | [1](day01/README.md) |   2   |   3   |                 4                 |
+|   5   |   6   |   7   |          8           |   9   |  10   |                11                 |
+|  12   |  13   |  14   |          15          |  16   |  17   |                18                 |
+|  19   |  20   |  21   |          22          |  23   |  24   | [🎁](https://youtu.be/bpQ3UfPYQn8) |
 
 
 ## Installation
@@ -33,3 +33,7 @@ Dependencies:
 **MacOS**:
 
     brew install curl pandoc
+
+Rust installation ([Guide](https://www.rust-lang.org/tools/install)):
+
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
