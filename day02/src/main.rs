@@ -3,9 +3,9 @@ use std::fs;
 #[derive(Debug, PartialEq)]
 enum RPS {
     Rock = 1,
-    Paper,
-    Scissor,
-    Unknown = -1,
+    Paper = 2,
+    Scissor = 3,
+    Unknown = 0,
 }
 
 fn parse_line(line: &str) -> (RPS, RPS) {
@@ -28,30 +28,50 @@ fn parse_line(line: &str) -> (RPS, RPS) {
 fn part_1(path: &str) -> i64 {
     let contents = fs::read_to_string(path).expect("Cannot find file!");
 
-    let mut total_score: i64 = 0;
+    let mut total_left_score: i64 = 0;
+    let mut total_right_score: i64 = 0;
 
     for line in contents.lines() {
-        let score = match parse_line(line) {
-            (RPS::Rock, RPS::Paper) => (RPS::Paper as u8) + 6,
-            (RPS::Paper, RPS::Scissor) => (RPS::Scissor as u8) + 6,
-            (RPS::Scissor, RPS::Rock) => (RPS::Rock as u8) + 6,
+        let (left_score, right_score) = match parse_line(line) {
+            (RPS::Rock, RPS::Paper) => (RPS::Rock as i64, (RPS::Paper as i64) + 6),
+            (RPS::Paper, RPS::Scissor) => (RPS::Paper as i64, (RPS::Scissor as i64) + 6),
+            (RPS::Scissor, RPS::Rock) => (RPS::Scissor as i64, (RPS::Rock as i64) + 6),
             (left, right) => {
                 if left == right {
-                    (left as u8) + (right as u8)
+                    ((left as i64) + 3, (right as i64) + 3)
                 } else {
-                    right as u8
+                    (left as i64, right as i64)
                 }
             }
         };
-
-        total_score += score as i64;
+        total_left_score += left_score;
+        total_right_score += right_score;
     }
-    total_score
+
+    if total_left_score > total_right_score {
+        total_left_score
+    } else {
+        total_right_score
+    }
 }
 
+#[test]
+fn test_part1() {
+    assert!(part_1("test_input.txt") == 15);
+}
+
+// #[test]
+// fn test_part2() {
+//     assert!(part_1("test_input.txt") == 15);
+// }
+
 fn main() {
-    // Test: Part 1
-    let answer: i64 = part_1("test_input.txt");
-    println!("\u{1b}[31m[Test]\u{1b}[39m: Part 1: {}", answer);
-    assert!(answer == 15);
+    println!("Advent of Code: Day 2");
+    println!("---------------------");
+
+    // Challenge 1
+    println!(
+        "\u{1b}[32m[Solution]\u{1b}[39m: Part 1: {}",
+        part_1("input.txt")
+    );
 }
