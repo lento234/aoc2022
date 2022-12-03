@@ -106,28 +106,28 @@ fn part_2(path: &str) -> i64 {
     total_score
 }
 
-#[test]
-fn test_part1() {
-    assert!(part_1("test_input.txt") == 15);
-}
-
-#[test]
-fn test_part2() {
-    assert!(part_2("test_input.txt") == 12);
-}
-
 fn main() {
-    println!("Advent of Code: Day 2");
-    println!("---------------------");
+    println!("");
+    println!("🎄🎁 Advent of Code: Day 2 🎁🎄");
+    println!("------------------------------\n");
 
     // Challenge 1
-    println!(
-        "\u{1b}[32m[Solution]\u{1b}[39m: Part 1: {}",
-        part_1("input.txt")
-    );
+    println!("\u{1b}[32m[Part 1]\u{1b}[39m: {}", part_1("input.txt"));
+    // Challenge 2
+    println!("\u{1b}[32m[Part 2]\u{1b}[39m: {}", part_2("input.txt"));
+}
 
-    println!(
-        "\u{1b}[32m[Solution]\u{1b}[39m: Part 2: {}",
-        part_2("input.txt")
-    );
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_part1() {
+        assert!(part_1("test_input.txt") == 15);
+    }
+
+    #[test]
+    fn test_part2() {
+        assert!(part_2("test_input.txt") == 12);
+    }
 }
