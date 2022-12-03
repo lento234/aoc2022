@@ -1,0 +1,35 @@
+use std::fs;
+
+fn parse_file(path: &str) -> String {
+    fs::read_to_string(path).expect("Cannot find file!")
+}
+
+fn part_1(path: &str) -> i64 {
+    let contents = parse_file(path);
+
+    for line in contents.lines() {
+        println!("{:?}", line);
+    }
+    1
+}
+
+fn main() {
+    println!("");
+    println!("🎄🎁 Advent of Code: Day {{DAY}} 🎁🎄");
+    println!("------------------------------\n");
+
+    // // Challenge 1
+    // println!("\u{1b}[32m[Part 1]\u{1b}[39m: {}", part_1("input.txt"));
+    // // Challenge 2
+    // println!("\u{1b}[32m[Part 2]\u{1b}[39m: {}", part_2("input.txt"));
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_part1() {
+        assert!(part_1("test_input.txt") == 0);
+    }
+}

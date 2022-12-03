@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Ensure we are in git root directory
 ROOTDIR=$(git rev-parse --show-toplevel)
@@ -21,6 +22,10 @@ fi
 # Initializing new directory using cargo
 echo "Initializing new day: day $DAYXX"
 cargo new $NEWDAY --vcs=none
+
+# Copy template
+echo "Copying template: template/main.rs.tmpl -> $NEWDAY/src/main.rs"
+sed "s/{{DAY}}/$DAY/g" template/main.rs.tmpl > $NEWDAY/src/main.rs
 
 # Generate README for new day
 echo -e "# Day $DAYXX\n" > $NEWDAY/README.md
