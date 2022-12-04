@@ -1,6 +1,5 @@
 use std::collections::HashSet;
 use std::fs;
-use std::os::unix::process;
 
 fn parse_file(path: &str) -> String {
     fs::read_to_string(path).expect("Cannot find file!")
