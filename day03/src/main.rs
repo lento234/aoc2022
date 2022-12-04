@@ -1,5 +1,5 @@
-use std::fs;
 use std::collections::HashSet;
+use std::fs;
 
 fn parse_file(path: &str) -> String {
     fs::read_to_string(path).expect("Cannot find file!")
@@ -11,7 +11,7 @@ fn part_1(path: &str) -> i64 {
     let mut sum: i64 = 0;
     for line in contents.lines() {
         // Collect bags
-        let mid = line.len()/2;
+        let mid = line.len() / 2;
         let bag_a: HashSet<&u8> = HashSet::from_iter(line.get(0..mid).unwrap().as_bytes());
         let bag_b: HashSet<&u8> = HashSet::from_iter(line.get(mid..).unwrap().as_bytes());
 
