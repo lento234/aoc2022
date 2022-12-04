@@ -56,7 +56,7 @@ fn part_2(path: &str) -> i64 {
 }
 
 fn main() {
-    println!("");
+    println!();
     println!("🎄🎁 Advent of Code: Day 4 🎁🎄");
     println!("------------------------------\n");
 
