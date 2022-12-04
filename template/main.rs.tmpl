@@ -1,4 +1,5 @@
 use std::fs;
+use std::time::Instant;
 
 fn parse_file(path: &str) -> String {
     fs::read_to_string(path).expect("Cannot find file!")
@@ -18,10 +19,17 @@ fn main() {
     println!("🎄🎁 Advent of Code: Day {{DAY}} 🎁🎄");
     println!("------------------------------\n");
 
+    let start = Instant::now();
+
     // // Challenge 1
     // println!("\u{1b}[32m[Part 1]\u{1b}[39m: {}", part_1("input.txt"));
     // // Challenge 2
     // println!("\u{1b}[32m[Part 2]\u{1b}[39m: {}", part_2("input.txt"));
+
+    println!(
+        "\n\u{1b}[34m[Summary]\u{1b}[39m: It took {} μs.",
+        start.elapsed().as_micros()
+    );
 }
 
 #[cfg(test)]
