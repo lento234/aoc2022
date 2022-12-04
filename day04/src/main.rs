@@ -9,14 +9,13 @@ fn part_1(path: &str) -> i64 {
 
     let mut sum: i64 = 0;
     for line in contents.lines() {
-
         let bounds: Vec<i64> = line
-                        .split(',')
-                        .map(|x| x.split('-'))
-                        .into_iter()
-                        .flatten()
-                        .map(|x| x.parse::<i64>().unwrap())
-                        .collect::<Vec<i64>>();
+            .split(',')
+            .map(|x| x.split('-'))
+            .into_iter()
+            .flatten()
+            .map(|x| x.parse::<i64>().unwrap())
+            .collect::<Vec<i64>>();
 
         let a_min: i64 = bounds[0];
         let a_max: i64 = bounds[1];
