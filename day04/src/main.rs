@@ -22,9 +22,7 @@ fn part_1(path: &str) -> i64 {
         let b_min: i64 = bounds[2];
         let b_max: i64 = bounds[3];
 
-        if (a_min <= b_min) && (a_max >= b_max) {
-            sum += 1;
-        } else if (b_min <= a_min) && (b_max >= a_max) {
+        if (a_min <= b_min && a_max >= b_max) || (b_min <= a_min && b_max >= a_max) {
             sum += 1;
         }
     }
