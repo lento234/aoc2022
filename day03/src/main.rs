@@ -10,7 +10,6 @@ fn char_to_priority(c: char) -> u8 {
     let c_u8 = c as u8;
     if c_u8 > 96 {
         c_u8 - 97 + 1
-
     } else if c_u8 > 64 {
         c_u8 - 65 + 27
     } else {
@@ -45,11 +44,16 @@ fn part_2(path: &str) -> i64 {
     let size = lines.len();
 
     for i in (0..size).step_by(3) {
-
         // Collect bags
         let mut bag: HashSet<char> = HashSet::from_iter(lines[i].chars());
-        bag = bag.intersection(&HashSet::from_iter(lines[i+1].chars())).cloned().collect();
-        bag = bag.intersection(&HashSet::from_iter(lines[i+2].chars())).cloned().collect();
+        bag = bag
+            .intersection(&HashSet::from_iter(lines[i + 1].chars()))
+            .cloned()
+            .collect();
+        bag = bag
+            .intersection(&HashSet::from_iter(lines[i + 2].chars()))
+            .cloned()
+            .collect();
 
         let priority_char = *bag.iter().last().unwrap();
         let priority = char_to_priority(priority_char);
