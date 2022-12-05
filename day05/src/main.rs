@@ -5,7 +5,7 @@ fn parse_file(path: &str) -> String {
     fs::read_to_string(path).expect("Cannot find file!")
 }
 
-fn find_pivot(lines: &Vec<&str>) -> usize {
+fn find_pivot(lines: &[&str]) -> usize {
     // Find location where number of stacks is given
     let p = lines
         .iter()
@@ -17,7 +17,7 @@ fn find_pivot(lines: &Vec<&str>) -> usize {
     p
 }
 
-fn make_stack(lines: &Vec<&str>, p: usize) -> Vec<Vec<char>> {
+fn make_stack(lines: &[&str], p: usize) -> Vec<Vec<char>> {
     // Generate stakcs
     let n_stacks = lines[p]
         .trim()
@@ -54,8 +54,8 @@ fn part_1(path: &str) -> String {
     let mut stacks = make_stack(&lines, p);
 
     // Loop over instructions
-    for i in (p + 2)..lines.len() {
-        let values: Vec<&str> = lines[i].split_whitespace().collect();
+    for line in lines.iter().skip(p + 2) {
+        let values: Vec<&str> = line.split_whitespace().collect();
         let n_moves: usize = values[1].parse().unwrap();
         let from: usize = values[3].parse().unwrap();
         let to: usize = values[5].parse().unwrap();
@@ -86,8 +86,8 @@ fn part_2(path: &str) -> String {
     let mut stacks = make_stack(&lines, p);
 
     // Loop over instructions
-    for i in (p + 2)..lines.len() {
-        let values: Vec<&str> = lines[i].split_whitespace().collect();
+    for line in lines.iter().skip(p + 2) {
+        let values: Vec<&str> = line.split_whitespace().collect();
         let n_moves: usize = values[1].parse().unwrap();
         let from: usize = values[3].parse().unwrap();
         let to: usize = values[5].parse().unwrap();
@@ -114,7 +114,7 @@ fn part_2(path: &str) -> String {
 }
 
 fn main() {
-    println!("");
+    println!();
     println!("🎄🎁 Advent of Code: Day 5 🎁🎄");
     println!("------------------------------\n");
 
