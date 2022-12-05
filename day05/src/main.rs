@@ -58,14 +58,11 @@ fn part_2(path: &str) -> String {
     let content = parse_file(path);
     let lines: Vec<&str> = content.lines().collect();
 
-    println!("{:#?}", lines);
-
     // Find location where number of stacks is given
     let p = lines.iter().enumerate().find(|(_, x)| x.is_empty()).unwrap().0 - 1;
 
     // Generate stakcs
     let n_stacks = lines[p].trim().chars().last().unwrap().to_digit(10).unwrap();
-    println!("nstacks -> {:?}", n_stacks);
 
     // Allocate stacks
     let mut stacks: Vec<Vec<char>> = Vec::new();
@@ -81,27 +78,24 @@ fn part_2(path: &str) -> String {
             }
         }
     }
-    println!("{:?}", stacks);
 
     // Loop over instructions
     for i in (p+2)..lines.len() {
-        println!("{:?}", lines[i]);
         let values: Vec<&str> = lines[i].split_whitespace().collect();
         let n_moves: usize = values[1].parse().unwrap();
         let from: usize = values[3].parse().unwrap();
         let to: usize = values[5].parse().unwrap();
 
+        let mut boxes: Vec<char> = Vec::new();
         for _ in 0..n_moves {
             let b = stacks[from-1].pop().expect("stack is empty");
-            stacks[to-1].push(b);
+            boxes.push(b);
         }
 
-        // .parse().unwrap();
-        // let from: i64
-        // .get(1..).unwrap();
-        println!("{:?}: {:?} -> {:?}", n_moves, from, to);
-
-        println!("{:?}", stacks);
+        for _ in 0..n_moves {
+            let b = boxes.pop().expect("stack is empty");
+            stacks[to-1].push(b);
+        }
     }
 
     // Answer
@@ -110,9 +104,6 @@ fn part_2(path: &str) -> String {
         let c = stack.last().expect("stack is empty");
         answer.push(*c);
     }
-    println!("{:?}", answer);
-
-
     answer
 }
 
@@ -125,8 +116,8 @@ fn main() {
 
     // Challenge 1
     println!("\u{1b}[32m[Part 1]\u{1b}[39m: {}", part_1("input.txt"));
-    // // Challenge 2
-    // println!("\u{1b}[32m[Part 2]\u{1b}[39m: {}", part_2("input.txt"));
+    // Challenge 2
+    println!("\u{1b}[32m[Part 2]\u{1b}[39m: {}", part_2("input.txt"));
 
     println!(
         "\n\u{1b}[34m[Summary]\u{1b}[39m: It took {} μs.",
@@ -145,6 +136,6 @@ mod test {
 
     #[test]
     fn test_part2() {
-        assert!(part_1("test_input.txt") == "MCD");
+        assert!(part_2("test_input.txt") == "MCD");
     }
 }
