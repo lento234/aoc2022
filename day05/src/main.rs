@@ -10,10 +10,22 @@ fn part_1(path: &str) -> String {
     let lines: Vec<&str> = content.lines().collect();
 
     // Find location where number of stacks is given
-    let p = lines.iter().enumerate().find(|(_, x)| x.is_empty()).unwrap().0 - 1;
+    let p = lines
+        .iter()
+        .enumerate()
+        .find(|(_, x)| x.is_empty())
+        .unwrap()
+        .0
+        - 1;
 
     // Generate stakcs
-    let n_stacks = lines[p].trim().chars().last().unwrap().to_digit(10).unwrap();
+    let n_stacks = lines[p]
+        .trim()
+        .chars()
+        .last()
+        .unwrap()
+        .to_digit(10)
+        .unwrap();
 
     // Allocate stacks
     let mut stacks: Vec<Vec<char>> = Vec::new();
@@ -31,15 +43,15 @@ fn part_1(path: &str) -> String {
     }
 
     // Loop over instructions
-    for i in (p+2)..lines.len() {
+    for i in (p + 2)..lines.len() {
         let values: Vec<&str> = lines[i].split_whitespace().collect();
         let n_moves: usize = values[1].parse().unwrap();
         let from: usize = values[3].parse().unwrap();
         let to: usize = values[5].parse().unwrap();
 
         for _ in 0..n_moves {
-            let b = stacks[from-1].pop().expect("stack is empty");
-            stacks[to-1].push(b);
+            let b = stacks[from - 1].pop().expect("stack is empty");
+            stacks[to - 1].push(b);
         }
     }
 
@@ -53,16 +65,27 @@ fn part_1(path: &str) -> String {
     answer
 }
 
-
 fn part_2(path: &str) -> String {
     let content = parse_file(path);
     let lines: Vec<&str> = content.lines().collect();
 
     // Find location where number of stacks is given
-    let p = lines.iter().enumerate().find(|(_, x)| x.is_empty()).unwrap().0 - 1;
+    let p = lines
+        .iter()
+        .enumerate()
+        .find(|(_, x)| x.is_empty())
+        .unwrap()
+        .0
+        - 1;
 
     // Generate stakcs
-    let n_stacks = lines[p].trim().chars().last().unwrap().to_digit(10).unwrap();
+    let n_stacks = lines[p]
+        .trim()
+        .chars()
+        .last()
+        .unwrap()
+        .to_digit(10)
+        .unwrap();
 
     // Allocate stacks
     let mut stacks: Vec<Vec<char>> = Vec::new();
@@ -80,7 +103,7 @@ fn part_2(path: &str) -> String {
     }
 
     // Loop over instructions
-    for i in (p+2)..lines.len() {
+    for i in (p + 2)..lines.len() {
         let values: Vec<&str> = lines[i].split_whitespace().collect();
         let n_moves: usize = values[1].parse().unwrap();
         let from: usize = values[3].parse().unwrap();
@@ -88,13 +111,13 @@ fn part_2(path: &str) -> String {
 
         let mut boxes: Vec<char> = Vec::new();
         for _ in 0..n_moves {
-            let b = stacks[from-1].pop().expect("stack is empty");
+            let b = stacks[from - 1].pop().expect("stack is empty");
             boxes.push(b);
         }
 
         for _ in 0..n_moves {
             let b = boxes.pop().expect("stack is empty");
-            stacks[to-1].push(b);
+            stacks[to - 1].push(b);
         }
     }
 
