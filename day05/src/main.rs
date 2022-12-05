@@ -5,10 +5,7 @@ fn parse_file(path: &str) -> String {
     fs::read_to_string(path).expect("Cannot find file!")
 }
 
-fn part_1(path: &str) -> String {
-    let content = parse_file(path);
-    let lines: Vec<&str> = content.lines().collect();
-
+fn find_pivot(lines: &Vec<&str>) -> usize {
     // Find location where number of stacks is given
     let p = lines
         .iter()
@@ -17,7 +14,10 @@ fn part_1(path: &str) -> String {
         .unwrap()
         .0
         - 1;
+    p
+}
 
+fn make_stack(lines: &Vec<&str>, p: usize) -> Vec<Vec<char>> {
     // Generate stakcs
     let n_stacks = lines[p]
         .trim()
@@ -41,6 +41,17 @@ fn part_1(path: &str) -> String {
             }
         }
     }
+    stacks
+}
+
+fn part_1(path: &str) -> String {
+    let content = parse_file(path);
+    let lines: Vec<&str> = content.lines().collect();
+
+    // Find pivot
+    let p = find_pivot(&lines);
+    // Generate stacks
+    let mut stacks = make_stack(&lines, p);
 
     // Loop over instructions
     for i in (p + 2)..lines.len() {
@@ -69,38 +80,10 @@ fn part_2(path: &str) -> String {
     let content = parse_file(path);
     let lines: Vec<&str> = content.lines().collect();
 
-    // Find location where number of stacks is given
-    let p = lines
-        .iter()
-        .enumerate()
-        .find(|(_, x)| x.is_empty())
-        .unwrap()
-        .0
-        - 1;
-
-    // Generate stakcs
-    let n_stacks = lines[p]
-        .trim()
-        .chars()
-        .last()
-        .unwrap()
-        .to_digit(10)
-        .unwrap();
-
-    // Allocate stacks
-    let mut stacks: Vec<Vec<char>> = Vec::new();
-    for _ in 0..n_stacks {
-        stacks.push(Vec::new());
-    }
-
-    // Insert boxes into stacks
-    for i in (0..p).rev() {
-        for (i, c) in lines[i].chars().enumerate() {
-            if c != '[' && c != ']' && c != ' ' {
-                stacks[i / 4].push(c);
-            }
-        }
-    }
+    // Find pivot
+    let p = find_pivot(&lines);
+    // Generate stacks
+    let mut stacks = make_stack(&lines, p);
 
     // Loop over instructions
     for i in (p + 2)..lines.len() {
@@ -109,14 +92,14 @@ fn part_2(path: &str) -> String {
         let from: usize = values[3].parse().unwrap();
         let to: usize = values[5].parse().unwrap();
 
-        let mut boxes: Vec<char> = Vec::new();
+        let mut tmp_stack: Vec<char> = Vec::new();
         for _ in 0..n_moves {
             let b = stacks[from - 1].pop().expect("stack is empty");
-            boxes.push(b);
+            tmp_stack.push(b);
         }
 
         for _ in 0..n_moves {
-            let b = boxes.pop().expect("stack is empty");
+            let b = tmp_stack.pop().expect("stack is empty");
             stacks[to - 1].push(b);
         }
     }
