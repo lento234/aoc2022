@@ -6,8 +6,7 @@ use utils;
 fn solve(path: &str, packet_size: usize) -> usize {
     let contents = utils::parse_file(path);
 
-    let line = contents.lines().next().unwrap();
-    let chars: Vec<char> = line.chars().collect();
+    let chars: Vec<char> = contents.chars().collect();
 
     for (i, batch) in chars.windows(packet_size).enumerate() {
         if batch.into_iter().collect::<HashSet<_>>().len() == packet_size {
