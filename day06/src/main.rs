@@ -13,7 +13,7 @@ fn solve(path: &str, packet_size: usize) -> usize {
             return i + packet_size;
         }
     }
-    0
+    return 0;
 }
 
 fn main() {
