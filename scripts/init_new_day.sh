@@ -22,6 +22,7 @@ fi
 # Initializing new directory using cargo
 echo "Initializing new day: day $DAYXX"
 cargo new $NEWDAY --vcs=none
+echo 'utils = { path = "../utils" }' >> $NEWDAY/Cargo.toml
 
 # Copy template
 echo "Copying template: template/main.rs.tmpl -> $NEWDAY/src/main.rs"
