@@ -110,7 +110,7 @@ fn main() {
     );
 
     println!(
-        "{}: {}",
+        "{}: {} µs",
         utils::color_text("[Summary]", 'b'),
         start.elapsed().as_micros()
     );

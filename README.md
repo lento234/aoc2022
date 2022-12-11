@@ -18,12 +18,12 @@ Advent of Code is an Advent calendar of small programming puzzles for a variety 
 
 ## Calendar
 
-|          M           |          T           |   W   |          T           |          F           |          S           |                 S                 |
-| :------------------: | :------------------: | :---: | :------------------: | :------------------: | :------------------: | :-------------------------------: |
-|                      |                      |       | [1](day01/README.md) | [2](day01/README.md) | [3](day01/README.md) |       [4](day04/README.md)        |
-| [5](day05/README.md) | [6](day06/README.md) |   7   |          8           |          9           |          10          |                11                 |
-|          12          |          13          |  14   |          15          |          16          |          17          |                18                 |
-|          19          |          20          |  21   |          22          |          23          |          24          | [🎁](https://youtu.be/bpQ3UfPYQn8) |
+|          M           |          T           |          W           |          T           |          F           |          S           |                 S                 |
+| :------------------: | :------------------: | :------------------: | :------------------: | :------------------: | :------------------: | :-------------------------------: |
+|                      |                      |                      | [1](day01/README.md) | [2](day01/README.md) | [3](day01/README.md) |       [4](day04/README.md)        |
+| [5](day05/README.md) | [6](day06/README.md) | [7](day06/README.md) | [8](day07/README.md) | [9](day09/README.md) |          10          |                11                 |
+|          12          |          13          |          14          |          15          |          16          |          17          |                18                 |
+|          19          |          20          |          21          |          22          |          23          |          24          | [🎁](https://youtu.be/bpQ3UfPYQn8) |
 
 
 ## Installation

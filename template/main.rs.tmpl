@@ -1,7 +1,5 @@
 use std::time::Instant;
 
-use utils;
-
 fn part_1(path: &str) -> i64 {
     let contents = utils::parse_file(path);
 
@@ -19,11 +17,11 @@ fn main() {
     let start = Instant::now();
 
     // // Challenge 1
-    println!("{}: {}", utils::color_text("[Part 1]", 'g'), part_1("input.txt"));
+    println!("{}: {}", utils::color_text("[Part 1]", 'g'), part_1("test_input.txt"));
     // // Challenge 2
-    // println!("{}: {}", utils::color_text("[Part 2]", 'g'), part_2("input.txt"));
+    // println!("{}: {}", utils::color_text("[Part 2]", 'g'), part_2("test_input.txt"));
 
-    println!("{}: {}", utils::color_text("[Summary]", 'b'), start.elapsed().as_micros());
+    println!("{}: {} µs", utils::color_text("[Summary]", 'b'), start.elapsed().as_micros());
 }
 
 #[cfg(test)]
@@ -34,4 +32,10 @@ mod test {
     fn test_part1() {
         assert!(part_1("test_input.txt") == 0);
     }
+
+    // #[test]
+    // fn test_part2() {
+    //     assert!(part_2("test_input.txt") == 0);
+    // }
+
 }
