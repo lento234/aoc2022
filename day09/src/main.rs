@@ -36,16 +36,8 @@ impl Rope {
         self.head.0 = head_pos.0;
         self.head.1 = head_pos.1;
         if self.chebyshev_distance() > 1 {
-            let mut dx = self.head.0 - self.tail.0;
-            if dx.abs() > 0 {
-                dx /= dx.abs()
-            };
-            let mut dy = self.head.1 - self.tail.1;
-            if dy.abs() > 0 {
-                dy /= dy.abs()
-            };
-            self.tail.0 += dx;
-            self.tail.1 += dy;
+            self.tail.0 += (self.head.0 - self.tail.0).signum();
+            self.tail.1 += (self.head.1 - self.tail.1).signum();
             self.tail_history.insert((self.tail.0, self.tail.1));
         }
         self.tail
