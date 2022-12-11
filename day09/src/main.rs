@@ -64,7 +64,7 @@ fn part_1(path: &str) -> usize {
 
     let mut rope = Rope::new();
     for line in contents.lines() {
-        let (dir, n_moves) = line.split_once(" ").expect("Failed to split line!");
+        let (dir, n_moves) = line.split_once(' ').expect("Failed to split line!");
         let dir = parse_direction(dir);
         for _ in 0..n_moves.parse::<_>().unwrap() {
             rope.move_head(dir);
@@ -81,7 +81,7 @@ fn part_2(path: &str) -> usize {
 
     for line in contents.lines() {
         // Parse direction and number of moves
-        let (dir_str, n_moves) = line.split_once(" ").expect("Failed to split line!");
+        let (dir_str, n_moves) = line.split_once(' ').expect("Failed to split line!");
         // Perform the moves
         for _ in 0..n_moves.parse::<_>().unwrap() {
             // Convert the direction to a tuple
