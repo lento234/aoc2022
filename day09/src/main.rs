@@ -32,16 +32,9 @@ impl Rope {
         dx.max(dy)
     }
 
-    fn move_head(&mut self, dir: (i64, i64)) {
-        self.head.0 += dir.0;
-        self.head.1 += dir.1;
-        let new_head = (self.head.0, self.head.1);
-        self.update_tail(new_head);
-    }
-
-    fn update_tail(&mut self, new_head: (i64, i64)) -> (i64, i64) {
-        self.head.0 = new_head.0;
-        self.head.1 = new_head.1;
+    fn update_knot(&mut self, head_pos: (i64, i64)) -> (i64, i64) {
+        self.head.0 = head_pos.0;
+        self.head.1 = head_pos.1;
         if self.chebyshev_distance() > 1 {
             let mut dx = self.head.0 - self.tail.0;
             if dx.abs() > 0 {
@@ -67,7 +60,8 @@ fn part_1(path: &str) -> usize {
         let (dir, n_moves) = line.split_once(' ').expect("Failed to split line!");
         let dir = parse_direction(dir);
         for _ in 0..n_moves.parse::<_>().unwrap() {
-            rope.move_head(dir);
+            let head_pos = (rope.head.0 + dir.0, rope.head.1 + dir.1);
+            rope.update_knot(head_pos);
         }
     }
     rope.tail_history.len()
@@ -86,11 +80,14 @@ fn part_2(path: &str) -> usize {
         for _ in 0..n_moves.parse::<_>().unwrap() {
             // Convert the direction to a tuple
             let dir = parse_direction(dir_str);
-            // Move the head of each rope
-            ropes.first_mut().unwrap().move_head(dir);
-            let mut prev_tail = ropes.first().unwrap().tail;
-            for rope in ropes.iter_mut().skip(1) {
-                prev_tail = rope.update_tail(prev_tail);
+            // Get new position of the head rope
+            let mut head_pos = (
+                ropes.first().unwrap().head.0 + dir.0,
+                ropes.first().unwrap().head.1 + dir.1,
+            );
+            // Update the knot position for each rope
+            for rope in ropes.iter_mut() {
+                head_pos = rope.update_knot(head_pos);
             }
         }
     }
@@ -146,5 +143,10 @@ mod test {
     #[test]
     fn test_part2_2() {
         assert!(part_2("test_input2.txt") == 36);
+    }
+
+    #[test]
+    fn test_part2_challenge() {
+        assert!(part_2("input.txt") == 2627);
     }
 }
