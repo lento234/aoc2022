@@ -3,19 +3,14 @@ use std::time::Instant;
 fn part_1(path: &str) -> usize {
     let contents = utils::parse_file(path);
     // Parse grid
-    let grid = contents
+    let grid: Vec<Vec<u8>> = contents
         .lines()
-        .map(|line| {
-            line.trim()
-                .chars()
-                .map(|x| x as u8 - 48)
-                .collect::<Vec<u8>>()
-        })
-        .collect::<Vec<Vec<u8>>>();
+        .map(|line| line.chars().map(|x| x as u8 - 48).collect())
+        .collect();
 
     // Get size
     let nrows = grid.len();
-    let ncols: usize = grid[0].len();
+    let ncols = grid[0].len();
 
     let mut n_visible = nrows * 2 + ncols * 2 - 4;
 
@@ -38,21 +33,16 @@ fn part_1(path: &str) -> usize {
 fn part_2(path: &str) -> usize {
     let contents = utils::parse_file(path);
     // Parse grid
-    let grid = contents
+    let grid: Vec<Vec<u8>> = contents
         .lines()
-        .map(|line| {
-            line.trim()
-                .chars()
-                .map(|x| x as u8 - 48)
-                .collect::<Vec<u8>>()
-        })
-        .collect::<Vec<Vec<u8>>>();
+        .map(|line| line.chars().map(|x| x as u8 - 48).collect())
+        .collect();
 
     // Get size
     let nrows = grid.len();
-    let ncols: usize = grid[0].len();
+    let ncols = grid[0].len();
 
-    let mut heighest_scenic_score = 0_usize;
+    let mut score: usize = 0;
 
     for i in 1..nrows - 1 {
         for j in 1..ncols - 1 {
@@ -102,11 +92,11 @@ fn part_2(path: &str) -> usize {
                         .expect("cannot find bottom")
                         + 1
                 };
-                heighest_scenic_score = heighest_scenic_score.max(left * right * bottom * top);
+                score = score.max(left * right * bottom * top);
             }
         }
     }
-    heighest_scenic_score
+    score
 }
 
 fn main() {
