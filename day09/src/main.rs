@@ -1,7 +1,16 @@
 use std::collections::HashSet;
 use std::time::Instant;
 
-#[derive(Debug, Default)]
+fn parse_direction(dir: &str) -> (i64, i64) {
+    match dir {
+        "L" => (-1, 0),
+        "R" => (1, 0),
+        "U" => (0, 1),
+        "D" => (0, -1),
+        _ => panic!("Invalid direction"),
+    }
+}
+#[derive(Debug, Clone)]
 struct Rope {
     head: (i64, i64),
     tail: (i64, i64),
@@ -23,14 +32,16 @@ impl Rope {
         dx.max(dy)
     }
 
-    fn move_head(&mut self, dir: &str) {
-        match dir {
-            "L" => self.head.0 -= 1,
-            "R" => self.head.0 += 1,
-            "U" => self.head.1 += 1,
-            "D" => self.head.1 -= 1,
-            _ => panic!("Invalid direction"),
-        };
+    fn move_head(&mut self, dir: (i64, i64)) {
+        self.head.0 += dir.0;
+        self.head.1 += dir.1;
+        let new_head = (self.head.0, self.head.1);
+        self.update_tail(new_head);
+    }
+
+    fn update_tail(&mut self, new_head: (i64, i64)) -> (i64, i64) {
+        self.head.0 = new_head.0;
+        self.head.1 = new_head.1;
         if self.chebyshev_distance() > 1 {
             let mut dx = self.head.0 - self.tail.0;
             if dx.abs() > 0 {
@@ -43,7 +54,8 @@ impl Rope {
             self.tail.0 += dx;
             self.tail.1 += dy;
             self.tail_history.insert((self.tail.0, self.tail.1));
-        };
+        }
+        self.tail
     }
 }
 
@@ -52,13 +64,37 @@ fn part_1(path: &str) -> usize {
 
     let mut rope = Rope::new();
     for line in contents.lines() {
-        println!("{:?}", line);
         let (dir, n_moves) = line.split_once(" ").expect("Failed to split line!");
+        let dir = parse_direction(dir);
         for _ in 0..n_moves.parse::<_>().unwrap() {
             rope.move_head(dir);
         }
     }
     rope.tail_history.len()
+}
+
+fn part_2(path: &str) -> usize {
+    let contents = utils::parse_file(path);
+
+    // Initialize 10 rope vector
+    let mut ropes = vec![Rope::new(); 9];
+
+    for line in contents.lines() {
+        // Parse direction and number of moves
+        let (dir_str, n_moves) = line.split_once(" ").expect("Failed to split line!");
+        // Perform the moves
+        for _ in 0..n_moves.parse::<_>().unwrap() {
+            // Convert the direction to a tuple
+            let dir = parse_direction(dir_str);
+            // Move the head of each rope
+            ropes.first_mut().unwrap().move_head(dir);
+            let mut prev_tail = ropes.first().unwrap().tail;
+            for rope in ropes.iter_mut().skip(1) {
+                prev_tail = rope.update_tail(prev_tail);
+            }
+        }
+    }
+    ropes.last().unwrap().tail_history.len()
 }
 
 fn main() {
@@ -75,7 +111,11 @@ fn main() {
         part_1("input.txt")
     );
     // Challenge 2
-    // println!("{}: {}", utils::color_text("[Part 2]", 'g'), part_2("input.txt"));
+    println!(
+        "{}: {}",
+        utils::color_text("[Part 2]", 'g'),
+        part_2("input.txt")
+    );
 
     println!(
         "{}: {} µs",
@@ -91,5 +131,20 @@ mod test {
     #[test]
     fn test_part1() {
         assert!(part_1("test_input.txt") == 13);
+    }
+
+    #[test]
+    fn test_part1_challenge() {
+        assert!(part_1("input.txt") == 6357);
+    }
+
+    #[test]
+    fn test_part2_1() {
+        assert!(part_2("test_input.txt") == 1);
+    }
+
+    #[test]
+    fn test_part2_2() {
+        assert!(part_2("test_input2.txt") == 36);
     }
 }
