@@ -3,9 +3,9 @@ use std::time::Instant;
 fn part_1(path: &str) -> usize {
     let contents = utils::parse_file(path);
     // Parse grid
-    let grid: Vec<Vec<u8>> = contents
+    let grid: Vec<Vec<char>> = contents
         .lines()
-        .map(|line| line.chars().map(|x| x as u8 - 48).collect())
+        .map(|line| line.chars().collect())
         .collect();
 
     // Get size
@@ -33,9 +33,9 @@ fn part_1(path: &str) -> usize {
 fn part_2(path: &str) -> usize {
     let contents = utils::parse_file(path);
     // Parse grid
-    let grid: Vec<Vec<u8>> = contents
+    let grid: Vec<Vec<char>> = contents
         .lines()
-        .map(|line| line.chars().map(|x| x as u8 - 48).collect())
+        .map(|line| line.chars().collect())
         .collect();
 
     // Get size
@@ -120,7 +120,7 @@ fn main() {
     );
 
     println!(
-        "{}: {}",
+        "{}: {} µs",
         utils::color_text("[Summary]", 'b'),
         start.elapsed().as_micros()
     );
