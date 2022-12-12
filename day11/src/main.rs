@@ -112,7 +112,7 @@ impl Monkey {
         self.n_inspections += 1;
         let mut item = self.items.pop().expect("No item left!");
         item = match (self.op.0.as_str(), self.op.1.as_str()) {
-            ("*", "old") => item * item,
+            ("*", "old") => item * 2,
             ("*", value) => item * value.parse::<usize>().unwrap(),
             ("+", "old") => item + item,
             ("+", value) => item + value.parse::<usize>().unwrap(),
