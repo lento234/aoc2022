@@ -3,7 +3,7 @@ use std::time::Instant;
 fn part_1(path: &str) -> i64 {
     let contents = utils::parse_file(path);
 
-    let mut cpu = CPU {
+    let mut cpu = Cpu {
         register: 1,
         cycle: 0,
         flags: (20..=220).step_by(40).collect(),
@@ -27,7 +27,7 @@ fn part_1(path: &str) -> i64 {
 fn part_2(path: &str) {
     let contents = utils::parse_file(path);
 
-    let mut crt = CRT::new();
+    let mut crt = Crt::new();
 
     for line in contents.lines() {
         if line.starts_with("addx") {
@@ -84,14 +84,14 @@ mod test {
 }
 
 #[derive(Debug, Clone)]
-struct CPU {
+struct Cpu {
     register: i64,
     cycle: usize,
     flags: Vec<usize>,
     signal: Vec<(usize, i64)>,
 }
 
-impl CPU {
+impl Cpu {
     fn addx(&mut self, value: i64) {
         self.register += value;
     }
@@ -114,22 +114,22 @@ const WIDTH: usize = 40;
 const HEIGHT: usize = 6;
 
 #[derive(Debug)]
-struct CRT {
-    cpu: CPU,
+struct Crt {
+    cpu: Cpu,
     cycle: usize,
     display: Vec<char>,
 }
 
-impl CRT {
+impl Crt {
     fn new() -> Self {
-        let cpu = CPU {
+        let cpu = Cpu {
             register: 1,
             cycle: 0,
             flags: Vec::new(),
             signal: Vec::new(),
         };
         Self {
-            cpu: cpu,
+            cpu,
             cycle: 0,
             display: vec![' '; WIDTH * HEIGHT],
         }
