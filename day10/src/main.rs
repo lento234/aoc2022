@@ -142,7 +142,7 @@ impl CRT {
 
     fn draw_display(&mut self) {
         if ((self.cycle % WIDTH) as i64 - self.cpu.register).abs() < 2 {
-            self.display[self.cycle] = '■';
+            self.display[self.cycle] = '█';
         }
     }
 
