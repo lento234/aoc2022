@@ -14,13 +14,13 @@ fn solve(path: &str, rounds: usize, reduce_worry: bool) -> usize {
     // sim.display();
 
     // Visualize final state
-    println!("== After round {} ==", rounds);
-    for (i, monkey) in sim.monkeys.iter().enumerate() {
-        println!(
-            "Monkey {i} inspected item {:?} times.",
-            monkey.n_inspections
-        );
-    }
+    // println!("== After round {} ==", rounds);
+    // for (i, monkey) in sim.monkeys.iter().enumerate() {
+    //     println!(
+    //         "Monkey {i} inspected item {:?} times.",
+    //         monkey.n_inspections
+    //     );
+    // }
 
     // Collect all inspections
     let mut inspections = sim
@@ -33,7 +33,7 @@ fn solve(path: &str, rounds: usize, reduce_worry: bool) -> usize {
     inspections.sort_by(|a, b| b.cmp(a));
 
     // Multiply the first 2
-    inspections[0..2].iter().fold(1, |acc, x| acc * x)
+    inspections[0..2].iter().product()
 }
 
 fn main() {
@@ -44,16 +44,17 @@ fn main() {
     let start = Instant::now();
 
     // Challenge 1
-    // println!(
-    //     "{}: {}",
-    //     utils::color_text("[Part 1]", 'g'),
-    //     solve("input.txt", 20, true)
-    // );
+    println!(
+        "{}: {}",
+        utils::color_text("[Part 1]", 'g'),
+        solve("input.txt", 20, true)
+    );
+
     // Challenge 2
     println!(
         "{}: {}",
         utils::color_text("[Part 2]", 'g'),
-        solve("test_input.txt", 20, false)
+        solve("input.txt", 10000, false)
     );
 
     println!(
@@ -77,10 +78,15 @@ mod test {
         assert!(solve("input.txt", 20, true) == 57838);
     }
 
-    // #[test]
-    // fn test_part2() {
-    //     assert!(solve("test_input.txt", 20) == 2713310158);
-    // }
+    #[test]
+    fn test_part2() {
+        assert!(solve("test_input.txt", 10000, false) == 2713310158);
+    }
+
+    #[test]
+    fn test_part2_challenge() {
+        assert!(solve("input.txt", 10000, false) == 15050382231);
+    }
 }
 
 #[derive(Debug)]
@@ -108,7 +114,7 @@ impl Monkey {
         }
     }
 
-    fn throw(&mut self, reduce_worry: bool) -> (usize, usize) {
+    fn yeet(&mut self, reduce_worry: bool, lcd: usize) -> (usize, usize) {
         self.n_inspections += 1;
         let mut item = self.items.pop().expect("No item left!");
         item = match (self.op.0.as_str(), self.op.1.as_str()) {
@@ -120,9 +126,15 @@ impl Monkey {
         };
         if reduce_worry {
             item /= 3;
+        } else {
+            item %= lcd;
         }
-        let to = !(item % self.divisor == 0) as usize;
+        let to = (item % self.divisor != 0) as usize;
         (self.next_monkeys[to], item)
+    }
+
+    fn yoink(&mut self, value: usize) {
+        self.items.push(value);
     }
 
     fn parse_monkey_props(prop: &str) -> Self {
@@ -130,11 +142,11 @@ impl Monkey {
 
         // Parse starting item
         let items: Vec<usize> = prop[1]
-            .split(":")
+            .split(':')
             .collect::<Vec<&str>>()
             .last()
             .unwrap()
-            .split(",")
+            .split(',')
             .map(|s| s.trim().parse().expect("Unable to parse starting item"))
             .collect();
 
@@ -149,7 +161,7 @@ impl Monkey {
 
         // Parse operation
         let divisor: usize = prop[3]
-            .split(" ")
+            .split(' ')
             .last()
             .expect("Unable to split divisible")
             .parse()
@@ -159,7 +171,7 @@ impl Monkey {
         let next_monkeys = prop[4..]
             .iter()
             .map(|line| {
-                line.split(" ")
+                line.split(' ')
                     .last()
                     .expect("Unable to get if true monkey")
                     .parse::<usize>()
@@ -181,18 +193,23 @@ struct Simulation {
     monkeys: Vec<Monkey>,
     round: usize,
     reduce_worry: bool,
+    lcd: usize,
 }
 
 impl Simulation {
     fn new(monkey_props: Vec<&str>, reduce_worry: bool) -> Self {
         // Collect all monkeys
+        let monkeys = monkey_props
+            .iter()
+            .map(|prop| Monkey::parse_monkey_props(prop))
+            .collect::<Vec<Monkey>>();
+        // Calculate the least common divisor
+        let lcd = monkeys.iter().map(|m| m.divisor).product();
         Self {
-            monkeys: monkey_props
-                .iter()
-                .map(|prop| Monkey::parse_monkey_props(prop))
-                .collect::<Vec<Monkey>>(),
+            monkeys,
             round: 0,
             reduce_worry,
+            lcd,
         }
     }
 
@@ -202,11 +219,12 @@ impl Simulation {
             println!("Monkey {i}: {:?}", monkey.items);
         }
     }
+
     fn step(&mut self) {
         for i in 0..self.monkeys.len() {
-            while self.monkeys[i].items.len() > 0 {
-                let (to, value) = self.monkeys[i].throw(self.reduce_worry);
-                self.monkeys[to].items.push(value);
+            while !self.monkeys[i].items.is_empty() {
+                let (to, value) = self.monkeys[i].yeet(self.reduce_worry, self.lcd);
+                self.monkeys[to].yoink(value);
             }
         }
         self.round += 1;
