@@ -223,4 +223,9 @@ mod test {
     fn test_part2() {
         assert!(part_2("test_input.txt") == 29);
     }
+
+    #[test]
+    fn test_part2_challenge() {
+        assert!(part_2("input.txt") == 354);
+    }
 }
