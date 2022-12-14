@@ -10,22 +10,16 @@ struct Grid {
     end: usize,
 }
 impl Grid {
-    fn new(contents: String) -> Self {
-        let ncols = contents.lines().next().unwrap().len();
-        let nrows = contents.lines().count();
-        let mut grid = contents.lines().fold(Vec::new(), |mut acc, line| {
-            acc.extend(line.chars());
-            acc
-        });
-        let start = grid
-            .iter()
-            .position(|&c| c == 'S')
-            .expect("Unable to find starting point");
+    fn new(mut grid: Vec<char>, ncols: usize, nrows: usize, start: usize) -> Self {
         let end = grid
             .iter()
             .position(|&c| c == 'E')
             .expect("Unable to find ending point");
-        grid[start] = 'a';
+        let normal_start = grid
+            .iter()
+            .position(|&c| c == 'S')
+            .expect("Unable to find starting point");
+        grid[normal_start] = 'a';
         grid[end] = 'z';
         Self {
             // fold all lines to a single vector of chars
@@ -137,10 +131,51 @@ impl Grid {
 fn part_1(path: &str) -> usize {
     let contents = utils::parse_file(path);
 
-    let grid = Grid::new(contents);
+    let grid = contents.lines().fold(Vec::new(), |mut acc, line| {
+        acc.extend(line.chars());
+        acc
+    });
+    let ncols = contents.lines().next().unwrap().len();
+    let nrows = contents.lines().count();
+
+    let start = grid
+        .iter()
+        .position(|&c| c == 'S')
+        .expect("Unable to find starting point");
+
+    let grid = Grid::new(grid.clone(), ncols, nrows, start);
 
     // grid.draw();
     grid.travel()
+}
+
+fn part_2(path: &str) -> usize {
+    let contents = utils::parse_file(path);
+
+    let grid = contents.lines().fold(Vec::new(), |mut acc, line| {
+        acc.extend(line.chars());
+        acc
+    });
+    let ncols = contents.lines().next().unwrap().len();
+    let nrows = contents.lines().count();
+
+    // let grid = Grid::new(contents);
+
+    let start = grid
+        .iter()
+        .enumerate()
+        .filter(|(_, &c)| c == 'a')
+        .map(|(i, _)| i)
+        .collect::<Vec<usize>>();
+
+    let mut nsteps = usize::MAX;
+    for i in start.iter() {
+        let grid = Grid::new(grid.clone(), ncols, nrows, *i);
+        // let nsteps = grid.travel();
+        nsteps = nsteps.min(grid.travel());
+        // println!("start = {:?} -> nsteps = {:?}", i, nsteps);
+    }
+    nsteps
 }
 
 fn main() {
@@ -157,7 +192,11 @@ fn main() {
         part_1("test_input.txt")
     );
     // // Challenge 2
-    // println!("{}: {}", utils::color_text("[Part 2]", 'g'), part_2("test_input.txt"));
+    println!(
+        "{}: {}",
+        utils::color_text("[Part 2]", 'g'),
+        part_2("input.txt")
+    );
 
     println!(
         "{}: {} µs",
@@ -175,8 +214,13 @@ mod test {
         assert!(part_1("test_input.txt") == 31);
     }
 
-    // #[test]
-    // fn test_part2() {
-    //     assert!(part_2("test_input.txt") == 0);
-    // }
+    #[test]
+    fn test_part1_challenge() {
+        assert!(part_1("input.txt") == 361);
+    }
+
+    #[test]
+    fn test_part2() {
+        assert!(part_2("test_input.txt") == 29);
+    }
 }
